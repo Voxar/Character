@@ -23,11 +23,11 @@ export default function SpellCard({ ...props }: SpellCardProps) {
         props.className
       )}
     >
-      <div className="flex flex-col rounded-xl bg-white m-5 mb-0 grow">
+      <div className="flex flex-col rounded-xl bg-white m-4 mb-0 grow">
         <div className="text-xl font-extrabold font-dragon-hunter tracking-widest">
           {props.name}
         </div>
-        <div className="bg-red-700 text-xs text-white p-1">{props.level}</div>
+        <div className="bg-red-700 text-xs text-white p-0.5">{props.level}</div>
         <div className="grid grid-cols-[auto,auto]">
           <div className="border-b-4 border-r-2 border-red-700">
             <p className="text-red-700 font-extrabold font-dragon-hunter tracking-widest">
@@ -54,12 +54,12 @@ export default function SpellCard({ ...props }: SpellCardProps) {
             <p>{props.duration}</p>
           </div>
         </div>
-        <div className="bg-red-700 text-xs p-1">&nbsp;</div>
+        <div className="bg-red-700 text-xs p-0.5">&nbsp;</div>
 
         <div className="text-xs text-left p-3 grow">
           <p>{props.description}</p>
         </div>
-        <div className="bg-red-700 text-white text-xs p-1">
+        <div className="bg-red-700 text-white text-xs p-0.5">
           <p>At Higher Levels</p>
         </div>
         <div className="text-xs text-left p-3">
@@ -67,7 +67,7 @@ export default function SpellCard({ ...props }: SpellCardProps) {
         </div>
       </div>
       <div>
-        <div className="flex flex-row items-center place-content-between h-auto font-extrabold text-left text-white p-2 px-5">
+        <div className="flex flex-row items-center place-content-between h-auto font-extrabold text-left text-white p-2 px-4">
           <p>
             <span className="text-xl font-dragon-hunter tracking-widest">
               {props.school.substring(0, 1)}
