@@ -19,7 +19,7 @@ export default function SpellCard({ ...props }: SpellCardProps) {
   return (
     <div
       className={classNames(
-        "flex flex-col bg-red-700 w-[350px] font-bold pt-1 h-full",
+        "flex flex-col bg-red-700 w-[350px] font-bold pt-1 h-full rounded-[20px]",
         props.className
       )}
     >
@@ -67,7 +67,7 @@ export default function SpellCard({ ...props }: SpellCardProps) {
         </div>
       </div>
       <div>
-        <div className="flex flex-row items-center place-content-between h-auto font-extrabold text-left text-white bg-red-700 p-2 px-5">
+        <div className="flex flex-row items-center place-content-between h-auto font-extrabold text-left text-white p-2 px-5">
           <p>
             <span className="text-xl font-dragon-hunter tracking-widest">
               {props.school.substring(0, 1)}
