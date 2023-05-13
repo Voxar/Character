@@ -7,6 +7,7 @@ import SpellCard, { SpellCardProps } from "./Cards/SpellCard";
 import * as Spells from "./Data/Spells";
 import { ISpell } from "./Models/ISpell";
 import { useState } from "react";
+import SpellCardStack from "./Cards/SpellCardStack";
 
 let hero = {
   name: "Hope",
@@ -209,14 +210,11 @@ function SkillBonus(
 function App() {
   const colCount = hero.attributes.length;
   const spellsByLevel = groupSpellsByLevel(hero.spells);
-  const [hoveredIndex, setHoveredIndex] = useState<
-    { stack: number; spell: number } | undefined
-  >(undefined);
 
   return (
     <div className="App p-20 bg-violet-900">
       <HeroCard {...hero} className="bg-violet-400" />
-      <div className={`grid grid-cols-${colCount} gap-1`}>
+      <div className={`grid grid-cols-${colCount} grid-flow-col gap-1`}>
         {hero.attributes.map((attr, index) => (
           <div className="bg-rose-100 rounded" key={index}>
             <AttributeCard2
@@ -245,34 +243,13 @@ function App() {
       </div>
       <div className="flex flex-row my-2">
         <div className="flex flex-row gap-1 bg-violet-300 rounded p-2">
-          {spellsByLevel.map((spellLevel, levelIndex) => (
+          {spellsByLevel.map((spells, levelIndex) => (
             <div className="relative w-[300px]" key={levelIndex}>
-              {spellLevel.map((spell, spellIndex) => (
-                <div
-                  key={"List " + spellIndex}
-                  className="hover:z-10 cursor-pointer"
-                  style={{
-                    position: "absolute",
-                    zIndex:
-                      hoveredIndex?.stack === levelIndex &&
-                      hoveredIndex?.spell === spellIndex
-                        ? 100
-                        : spellIndex,
-                    left: 0,
-                    top: spellIndex * 45,
-                  }}
-                  onMouseEnter={() =>
-                    setHoveredIndex({ stack: levelIndex, spell: spellIndex })
-                  }
-                  onMouseLeave={() => setHoveredIndex(undefined)}
-                >
-                  <SpellCard
-                    className="w-[300px]"
-                    {...SpellForSpellCard(spell)}
-                    key={"Card " + spellIndex}
-                  />
-                </div>
-              ))}
+              <SpellCardStack
+                spells={spells.map(SpellForSpellCard)}
+                className="w-300px h-full"
+                width="300px"
+              />
             </div>
           ))}
         </div>

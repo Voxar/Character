@@ -1,5 +1,6 @@
 export enum CastTimeUnit {
   Action = "action",
+  BonusAction = "bonus_action",
   Reaction = "reaction",
   Minute = "minute",
   Hour = "hour",
@@ -17,7 +18,7 @@ export enum RangeUnit {
 }
 
 export interface IRange {
-  count: number | undefined;
+  count?: number;
   unit: RangeUnit;
 }
 
@@ -36,7 +37,7 @@ export enum DurationUnit {
 }
 
 export interface IDuration {
-  count: number | undefined;
+  count?: number;
   unit: DurationUnit;
 }
 

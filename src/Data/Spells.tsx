@@ -25,7 +25,6 @@ export const RealSpells: ISpell[] = [
       { short: "M", description: "a tiny ball of bat guano and sulfur" },
     ],
     duration: {
-      count: undefined,
       unit: DurationUnit.Instantaneous,
     },
     description:
@@ -48,12 +47,10 @@ export const RealSpells: ISpell[] = [
       type: CastTimeUnit.Action,
     },
     range: {
-      count: undefined,
       unit: RangeUnit.Touch,
     },
     components: [{ short: "V" }, { short: "S" }],
     duration: {
-      count: undefined,
       unit: DurationUnit.Instantaneous,
     },
     description:
@@ -94,6 +91,66 @@ export const RealSpells: ISpell[] = [
       shape: AreaOfEffectShape.Radius,
     },
   },
+  {
+    name: "Eldritch Blast",
+    level: 0,
+    levelString: "Cantrip",
+    castTime: { count: 1, type: CastTimeUnit.Action },
+    range: { count: 120, unit: RangeUnit.Feet },
+    components: [{ short: "V, S" }],
+    duration: { unit: DurationUnit.Instantaneous },
+    description:
+      "A beam of crackling energy streaks toward a creature within range. Make a ranged spell attack against the target. On a hit, the target takes 1d10 force damage.",
+    higherLevels:
+      "The spell creates more than one beam when you reach higher levels: two beams at 5th Level, three beams at 11th level, and four beams at 17th level.",
+    school: "evocation",
+  },
+  {
+    name: "Mage Armor",
+    level: 1,
+    levelString: "1st-level",
+    castTime: { count: 1, type: CastTimeUnit.Minute },
+    range: { unit: RangeUnit.Touch },
+    components: [{ short: "V, S, M", description: "a piece of cured leather" }],
+    duration: { count: 8, unit: DurationUnit.Hour },
+    description:
+      "You touch a willing creature who isn't wearing armor, and a protective magical force surrounds it until the spell ends. The target's base AC becomes 13 + its Dexterity modifier. The spell ends if the target dons armor or if you dismiss the spell as an action.",
+    higherLevels:
+      "When you cast this spell using a spell slot of 2nd level or higher, the duration increases by 8 hours for each slot level above 1st.",
+    school: "abjuration",
+  },
+  {
+    name: "Misty Step",
+    level: 2,
+    levelString: "2nd-level",
+    castTime: { count: 1, type: CastTimeUnit.BonusAction },
+    range: { count: 0, unit: RangeUnit.Self },
+    components: [{ short: "V" }],
+    duration: { unit: DurationUnit.Instantaneous },
+    description:
+      "Briefly surrounded by silvery mist, you teleport up to 30 feet to an unoccupied space that you can see.",
+    higherLevels:
+      "When you cast this spell using a spell slot of 3rd level or higher, the distance you can teleport increases by 10 feet for each slot level above 2nd.",
+    school: "conjuration",
+  },
+  {
+    name: "Darkness",
+    level: 2,
+    levelString: "2nd-level",
+    castTime: { count: 1, type: CastTimeUnit.Action },
+    range: { count: 60, unit: RangeUnit.Feet },
+    components: [
+      {
+        short: "V, M",
+        description: "bat fur and a drop of pitch or piece of coal",
+      },
+    ],
+    duration: { count: 10, unit: DurationUnit.Minute },
+    description:
+      "Magical darkness spreads from a point you choose within range to fill a 15-foot radius sphere for the duration. The darkness spreads around corners. A creature with darkvision can't see through this darkness, and nonmagical light can't illuminate it.",
+    higherLevels: "",
+    school: "evocation",
+  },
 ];
 
 export const FunSpells: ISpell[] = [
@@ -111,7 +168,6 @@ export const FunSpells: ISpell[] = [
     },
     components: [{ short: "V" }, { short: "S" }],
     duration: {
-      count: undefined,
       unit: DurationUnit.Instantaneous,
     },
     description:
@@ -165,7 +221,6 @@ export const FunSpells: ISpell[] = [
     },
     components: [{ short: "V" }],
     duration: {
-      count: undefined,
       unit: DurationUnit.Instantaneous,
     },
     description:
@@ -182,7 +237,6 @@ export const FunSpells: ISpell[] = [
       type: CastTimeUnit.Action,
     },
     range: {
-      count: undefined,
       unit: RangeUnit.Touch,
     },
     components: [
