@@ -1,10 +1,12 @@
-import React from "react";
-import logo from "./logo.svg";
+import pluralize from "pluralize";
 import "./App.css";
-import HeroCard, { IHeroInfo } from "./Cards/HeroCard";
-import AttributeCard from "./Cards/AttributeCard";
-import SkillTable from "./Cards/SkillTable";
-import SpellCard from "./Cards/SpellCard";
+import { AttributeCard2 } from "./Cards/AttributeCard";
+import HeroCard from "./Cards/HeroCard";
+import { SkillTable2 } from "./Cards/SkillTable";
+import SpellCard, { SpellCardProps } from "./Cards/SpellCard";
+import * as Spells from "./Data/Spells";
+import { ISpell } from "./Models/ISpell";
+import { useState } from "react";
 
 let hero = {
   name: "Hope",
@@ -12,37 +14,38 @@ let hero = {
   description: "Female Tiefling Sourcerer",
   levelDescription: "Level 5",
   xp: "XP: 1456",
+  proficiencyBonus: 3,
 
   attributes: [
     {
       name: "strength",
       value: 12,
-      add: "+1",
+      modifier: "+1",
     },
     {
       name: "dexterity",
       value: 14,
-      add: "+2",
+      modifier: "+2",
     },
     {
       name: "constitution",
       value: 14,
-      add: "+2",
+      modifier: "+2",
     },
     {
       name: "intelligence",
       value: 12,
-      add: "+1",
+      modifier: "+1",
     },
     {
       name: "wisdom",
       value: 10,
-      add: "0",
+      modifier: "0",
     },
     {
       name: "charisma",
       value: 18,
-      add: "+4",
+      modifier: "+4",
     },
   ],
 
@@ -138,71 +141,140 @@ let hero = {
       prof: true,
     },
   ],
+
+  spells: Spells.default,
 };
 
+function SpellForSpellCard(spell: ISpell): SpellCardProps {
+  const castTimeString = `${spell.castTime.count} ${pluralize(
+    spell.castTime.type
+  )}`;
+  const rangeString = spell.range.count
+    ? `${spell.range.count} ${pluralize(spell.range.unit)}`
+    : spell.range.unit.toString();
+  const componentString = spell.components
+    .map((component) => component.short)
+    .join(", ");
+  const durationString = spell.duration.count
+    ? `${spell.duration.count} ${pluralize(spell.duration.unit.toString())}`
+    : spell.duration.unit.toString();
+
+  return {
+    name: spell.name,
+    level: spell.levelString,
+    castTime: castTimeString,
+    range: rangeString,
+    components: componentString,
+    duration: durationString,
+    description: spell.description,
+    higherLevels: spell.higherLevels,
+    school: spell.school,
+  };
+}
+
+function groupSpellsByLevel(spells: ISpell[]): ISpell[][] {
+  const result: ISpell[][] = [];
+
+  // Group the spells by level
+  const spellMap = spells.reduce((map, spell) => {
+    const level = spell.level;
+    if (!map.has(level)) {
+      map.set(level, []);
+    }
+    const spellList = map.get(level) || [];
+    spellList.push(spell);
+    map.set(level, spellList);
+    return map;
+  }, new Map<number, ISpell[]>());
+
+  // Convert the spell map to a list of lists
+  spellMap.forEach((spellList, level) => {
+    result[level] = spellList;
+  });
+
+  return result;
+}
+
 function SkillBonus(
-  skill: { mod: string },
-  attributes: { name: string; value: number }[]
+  skill: { mod: string; prof: boolean },
+  attributes: { name: string; value: number }[],
+  heroProfBonus: number
 ) {
   let attr = attributes.find((x) => x.name === skill.mod);
   if (attr === undefined) return 0;
-  let val = (attr.value - 10) / 2;
+  let val = (attr.value - 10) / 2 + (skill.prof ? heroProfBonus : 0);
   return (val >= 0 ? "+" : "-") + val.toString();
 }
 
 function App() {
+  const colCount = hero.attributes.length;
+  const spellsByLevel = groupSpellsByLevel(hero.spells);
+  const [hoveredIndex, setHoveredIndex] = useState<
+    { stack: number; spell: number } | undefined
+  >(undefined);
+
   return (
     <div className="App p-20 bg-violet-900">
       <HeroCard {...hero} className="bg-violet-400" />
-      <div className="flex flex-row my-2">
-        {hero.attributes.map((attr) => (
-          <AttributeCard
-            {...attr}
-            className="w-[100px] h-[100px] mr-1 rounded"
-          />
+      <div className={`grid grid-cols-${colCount} gap-1`}>
+        {hero.attributes.map((attr, index) => (
+          <div className="bg-rose-100 rounded" key={index}>
+            <AttributeCard2
+              className="rounded grow-0"
+              name={attr.name}
+              value={attr.value}
+              modifier={attr.modifier}
+            />
+            <SkillTable2
+              className="border-t-2 border-black p-2 grow-0 w-auto"
+              skills={hero.skills
+                .filter((skill) => skill.mod === attr.name)
+                .map((skill) => ({
+                  modifier: skill.mod.substring(0, 3).toUpperCase(),
+                  bonus: SkillBonus(
+                    skill,
+                    hero.attributes,
+                    hero.proficiencyBonus
+                  ).toString(),
+                  ...skill,
+                }))}
+              attributes={hero.attributes}
+            />
+          </div>
         ))}
       </div>
       <div className="flex flex-row my-2">
-        <SkillTable
-          className="rounded p-2"
-          skills={hero.skills.map((skill) => ({
-            modifier: skill.mod.substring(0, 3).toUpperCase(),
-            bonus: SkillBonus(skill, hero.attributes).toString(),
-            ...skill,
-          }))}
-          attributes={hero.attributes}
-        />
-        <div className="flex flex-row gap-1 ml-2 bg-violet-300 rounded p-2">
-          <SpellCard
-            name={"FIREBALL"}
-            level={"3rd-level evocation"}
-            castTime={"1 action"}
-            range={"150 feet"}
-            components={"V, S, M"}
-            duration={"Instantaneous"}
-            description={
-              "Matenal a tiny ball of bat guano and sultur A bright streak flashes from your pointing linger to a point you choose within range and then blossoms with a low roar into an explosion o lame. Each creature in a 20-toot-radius sphere centered on that point must make a Dexterity saving throw. A target takes 8d6 fire damage on a failed save, or hall as much damage on a successlul one. The hre spreads around corners. It tonices nammable obiects in the area that arent being worn or carried"
-            }
-            higherLevels={
-              "When you cast this spell using a spell slot of 4th level or higher, the damage increases by lap for each slot level above 3rd"
-            }
-            school="ARCANE"
-          />
-          <SpellCard
-            name={"THUNDERCLAP"}
-            level={"Evocation cantrip"}
-            castTime={"1 action"}
-            range={"Self (5 foot radius)"}
-            components={"S"}
-            duration={"Instantaneous"}
-            description={
-              "You create a burst of thunderous sound, which can be heard 100 feet away. Each creature other than you within 5 feet of you must make a Constitution saving throw. On a failed save, the creature takes 1d6 thunder damage."
-            }
-            higherLevels={
-              "The spell's damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6)."
-            }
-            school={"ELEMENTAL"}
-          />
+        <div className="flex flex-row gap-1 bg-violet-300 rounded p-2">
+          {spellsByLevel.map((spellLevel, levelIndex) => (
+            <div className="relative w-[300px]" key={levelIndex}>
+              {spellLevel.map((spell, spellIndex) => (
+                <div
+                  key={"List " + spellIndex}
+                  className="hover:z-10 cursor-pointer"
+                  style={{
+                    position: "absolute",
+                    zIndex:
+                      hoveredIndex?.stack === levelIndex &&
+                      hoveredIndex?.spell === spellIndex
+                        ? 100
+                        : spellIndex,
+                    left: 0,
+                    top: spellIndex * 45,
+                  }}
+                  onMouseEnter={() =>
+                    setHoveredIndex({ stack: levelIndex, spell: spellIndex })
+                  }
+                  onMouseLeave={() => setHoveredIndex(undefined)}
+                >
+                  <SpellCard
+                    className="w-[300px]"
+                    {...SpellForSpellCard(spell)}
+                    key={"Card " + spellIndex}
+                  />
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -1,8 +1,6 @@
 import classNames from "classnames";
 import { HTMLAttributes } from "react";
 
-interface ISpell {}
-
 export interface SpellCardProps extends HTMLAttributes<HTMLDivElement> {
   name: string;
   level: string;
