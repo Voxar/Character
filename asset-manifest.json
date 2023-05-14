@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/Character/static/css/main.a2a2185e.css",
+    "main.js": "/Character/static/js/main.a43c7cf7.js",
+    "static/js/787.28cb0dcd.chunk.js": "/Character/static/js/787.28cb0dcd.chunk.js",
+    "static/media/Draconis.ttf": "/Character/static/media/Draconis.a680907cf7417672cfa0.ttf",
+    "static/media/dungeon.ttf": "/Character/static/media/dungeon.374d4b3110d22f2d685e.ttf",
+    "static/media/DragonHunter.otf": "/Character/static/media/DragonHunter.bfd266123930ca81297a.otf",
+    "index.html": "/Character/index.html",
+    "main.a2a2185e.css.map": "/Character/static/css/main.a2a2185e.css.map",
+    "main.a43c7cf7.js.map": "/Character/static/js/main.a43c7cf7.js.map",
+    "787.28cb0dcd.chunk.js.map": "/Character/static/js/787.28cb0dcd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a2a2185e.css",
+    "static/js/main.a43c7cf7.js"
+  ]
+}
