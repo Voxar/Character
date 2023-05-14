@@ -7,7 +7,7 @@ import SpellCard, { SpellCardProps } from "./Cards/SpellCard";
 import * as Spells from "./Data/Spells";
 import { ISpell } from "./Models/ISpell";
 import { useState } from "react";
-import SpellCardStack from "./Cards/SpellCardStack";
+import SpellCardStack, { SpellCardStackSection } from "./Cards/SpellCardStack";
 
 let hero = {
   name: "Hope",
@@ -146,56 +146,6 @@ let hero = {
   spells: Spells.default,
 };
 
-function SpellForSpellCard(spell: ISpell): SpellCardProps {
-  const castTimeString = `${spell.castTime.count} ${pluralize(
-    spell.castTime.type
-  )}`;
-  const rangeString = spell.range.count
-    ? `${spell.range.count} ${pluralize(spell.range.unit)}`
-    : spell.range.unit.toString();
-  const componentString = spell.components
-    .map((component) => component.short)
-    .join(", ");
-  const durationString = spell.duration.count
-    ? `${spell.duration.count} ${pluralize(spell.duration.unit.toString())}`
-    : spell.duration.unit.toString();
-
-  return {
-    name: spell.name,
-    level: spell.levelString,
-    castTime: castTimeString,
-    range: rangeString,
-    components: componentString,
-    duration: durationString,
-    description: spell.description,
-    higherLevels: spell.higherLevels,
-    school: spell.school,
-  };
-}
-
-function groupSpellsByLevel(spells: ISpell[]): ISpell[][] {
-  const result: ISpell[][] = [];
-
-  // Group the spells by level
-  const spellMap = spells.reduce((map, spell) => {
-    const level = spell.level;
-    if (!map.has(level)) {
-      map.set(level, []);
-    }
-    const spellList = map.get(level) || [];
-    spellList.push(spell);
-    map.set(level, spellList);
-    return map;
-  }, new Map<number, ISpell[]>());
-
-  // Convert the spell map to a list of lists
-  spellMap.forEach((spellList, level) => {
-    result[level] = spellList;
-  });
-
-  return result;
-}
-
 function SkillBonus(
   skill: { mod: string; prof: boolean },
   attributes: { name: string; value: number }[],
@@ -209,7 +159,6 @@ function SkillBonus(
 
 function App() {
   const colCount = hero.attributes.length;
-  const spellsByLevel = groupSpellsByLevel(hero.spells);
 
   return (
     <div className="App p-20 bg-violet-900">
@@ -242,28 +191,7 @@ function App() {
         ))}
       </div>
       <div className="flex flex-row my-2">
-        <div className="flex flex-row gap-1 bg-violet-300 rounded p-2">
-          {spellsByLevel.map((spells, levelIndex) => (
-            <div className="relative w-[300px]" key={levelIndex}>
-              <div className="flex flex-row items-center justify-between m-3">
-                <p className="text-left font-dragon-hunter">
-                  {levelIndex === 0 ? "Cantrips" : `Level ${levelIndex} Spells`}
-                </p>
-                <div className="flex gap-1">
-                  <input type="checkbox" />
-                  <input type="checkbox" />
-                  <input type="checkbox" />
-                </div>
-              </div>
-
-              <SpellCardStack
-                spells={spells.map(SpellForSpellCard)}
-                className="w-300px h-full"
-                width="300px"
-              />
-            </div>
-          ))}
-        </div>
+        <SpellCardStackSection spells={hero.spells} />
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ export default function SpellCard({ ...props }: SpellCardProps) {
   return (
     <div
       className={classNames(
-        "flex flex-col bg-red-700 w-[350px] font-bold pt-1 h-full rounded-[20px]",
+        "flex flex-col bg-red-700 w-[300px] font-bold pt-1 h-full rounded-[20px]",
         props.className
       )}
     >

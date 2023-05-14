@@ -35,3 +35,22 @@ code {
   /* other formats include: 'woff2', 'truetype, 'opentype',
                             'embedded-opentype', and 'svg' */
 }
+
+.herocard .stat {
+  @apply bg-white h-full border border-black p-2 mx-0.5 font-draconis;
+}
+.herocard .stat.grid>p {
+  text-align: start;
+}
+.herocard .stat.grid>p:nth-child(even) {
+  text-align: end;
+  margin-left: 1em;
+}
+
+.herocard .hp-title {
+  @apply uppercase;
+}
+
+.herocard .hp-value {
+  @apply text-4xl;
+}
