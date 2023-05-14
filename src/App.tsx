@@ -245,6 +245,17 @@ function App() {
         <div className="flex flex-row gap-1 bg-violet-300 rounded p-2">
           {spellsByLevel.map((spells, levelIndex) => (
             <div className="relative w-[300px]" key={levelIndex}>
+              <div className="flex flex-row items-center justify-between m-3">
+                <p className="text-left font-dragon-hunter">
+                  {levelIndex === 0 ? "Cantrips" : `Level ${levelIndex} Spells`}
+                </p>
+                <div className="flex gap-1">
+                  <input type="checkbox" />
+                  <input type="checkbox" />
+                  <input type="checkbox" />
+                </div>
+              </div>
+
               <SpellCardStack
                 spells={spells.map(SpellForSpellCard)}
                 className="w-300px h-full"
