@@ -67,7 +67,7 @@ export default function SpellCard({ ...props }: SpellCardProps) {
       <div>
         <div className="flex flex-row items-center place-content-between h-auto font-extrabold text-left text-white p-2 px-4">
           <p>
-            <span className="text-xl font-dragon-hunter tracking-widest">
+            <span className="text-xl font-dragon-hunter">
               {props.school.substring(0, 1)}
             </span>
             {props.school.substring(1)}

@@ -2,6 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://voxar.github.io/Character",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -23,7 +24,9 @@
     "start": "WATCHPACK_POLLING=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn run build",
+    "deploy": "yarn gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -44,6 +47,7 @@
     ]
   },
   "devDependencies": {
-    "@types/pluralize": "^0.0.29"
+    "@types/pluralize": "^0.0.29",
+    "gh-pages": "^5.0.0"
   }
 }
